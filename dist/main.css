@@ -1,3 +1,7 @@
 body {
   line-height: 2;
 }
+
+.item {
+  border-style: solid;
+}

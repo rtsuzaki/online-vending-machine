@@ -25,13 +25,29 @@ class App extends React.Component {
       .catch((error) => {
         console.log('Error fetching', error.message);
       });
+
+    fetch('balance', { method: 'GET' })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Network response failed');
+      })
+      .then(latestBalance => this.setState({ balance: latestBalance.main_user_balance }))
+      .catch((error) => {
+        console.log('Error fetching', error.message);
+      });
   }
 
 
   addToBalance() {
     this.setState((prevState) => {
-      return { balance: prevState.balance + 1 }
+      return { balance: prevState.balance + 1 };
     });
+  }
+
+  buyItemHandler(item) {
+    console.log(item)
   }
 
   render() {
@@ -47,7 +63,7 @@ class App extends React.Component {
           {this.state.balance}
         </div>
 
-        <ItemList items={this.state.items}/>
+        <ItemList items={this.state.items} buyItem={this.buyItemHandler} />
 
       </div>
     );
