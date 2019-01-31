@@ -11,6 +11,7 @@ class App extends React.Component {
     };
 
     this.addToBalance = this.addToBalance.bind(this);
+    this.buyItemHandler = this.buyItemHandler.bind(this);
   }
 
   componentDidMount() {
@@ -26,7 +27,7 @@ class App extends React.Component {
         console.log('Error fetching', error.message);
       });
 
-    fetch('balance', { method: 'GET' })
+    fetch('/balance', { method: 'GET' })
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -48,6 +49,17 @@ class App extends React.Component {
 
   buyItemHandler(item) {
     console.log(item)
+    console.log('state balance', this.state.balance)
+    const updatedBalance = this.state.balance - item.price;
+
+    if (this.state.balance >= item.price) {
+      fetch(`/balance/${updatedBalance}`, { method: 'put' })
+        .then(response => response.json())
+        .then(response => {
+          console.log('HERE')
+          this.setState({ balance: parseFloat(response) })
+        });
+    }
   }
 
   render() {

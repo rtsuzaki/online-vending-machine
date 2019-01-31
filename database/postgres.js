@@ -26,6 +26,17 @@ const getCurrentBalance = (request, response) => {
   });
 };
 
+const updateBalance = (request, response) => {
+  const updatedBalance = request.params.updatedBalance;
+  client.query('UPDATE balances SET main_user_balance = $1 WHERE id = 1', [updatedBalance], (error, results) => {
+    if (error) {
+      console.log('ERROR');
+      throw error;
+    }
+    response.status(200).json(updatedBalance);
+  });
+};
+
 const getItems = (request, response) => {
   client.query('SELECT * FROM items', (error, results) => {
     if (error) {
@@ -39,4 +50,5 @@ const getItems = (request, response) => {
 module.exports = {
   getCurrentBalance,
   getItems,
+  updateBalance,
 };
