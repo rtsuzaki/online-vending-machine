@@ -1,5 +1,6 @@
 import React from "react";
 import ItemList from './ItemList.jsx';
+import AddToBalanceButton from './AddToBalanceButton.jsx';
 
 
 class App extends React.Component {
@@ -82,21 +83,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <button type="button" onClick={() => this.addToBalance(1)}>
-          Add $1
-        </button>
-
-        <button type="button" onClick={() => this.addToBalance(5)}>
-          Add $5
-        </button>
-
-        <button type="button" onClick={() => this.addToBalance(10)}>
-          Add $10
-        </button>
-
-        <button type="button" onClick={() => this.addToBalance(20)}>
-          Add $20
-        </button>
+        {[1, 5, 10, 20].map((addedVal) => {
+          return <AddToBalanceButton addToBalance={this.addToBalance} addedVal={addedVal} />;
+        })}
 
         <div>
         The user balance is:
