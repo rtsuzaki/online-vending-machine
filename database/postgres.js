@@ -49,7 +49,7 @@ const getItems = (request, response) => {
 
 const updateItemQuantity = (request, response) => {
   const id = parseInt(request.params.id);
-  const updatedQuantity = request.body.currQuantity - 1;
+  const { updatedQuantity } = request.body;
 
   client.query('UPDATE items SET quantity = $1 WHERE id = $2', [updatedQuantity, id], (error, results) => {
     if (error) {

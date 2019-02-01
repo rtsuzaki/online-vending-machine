@@ -55,14 +55,20 @@ class App extends React.Component {
     const updatedBalance = this.state.balance - item.price;
 
     if (this.state.balance >= item.price && item.quantity > 0) {
-      fetch(`/balance/${updatedBalance}`, { method: 'put' })
+      fetch(`/balance/${updatedBalance}`, { 
+        method: 'put',
+        // body: JSON.stringify({ updatedBalance }),
+        // headers: {
+        //   'Content-Type': 'application/json',
+        // },
+      })
         .then(response => response.json())
         .then(response => {
           this.setState({ balance: parseFloat(response) })
         })
         .then(fetch(`/items/${item.id}`, {
           method: 'put',
-          body: JSON.stringify({ currQuantity: item.quantity }),
+          body: JSON.stringify({ updatedQuantity: item.quantity - 1 }),
           headers: {
             'Content-Type': 'application/json',
           },
