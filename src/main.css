@@ -5,3 +5,16 @@ body {
 .item {
   border-style: solid;
 }
+
+.add-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 4px;
+  cursor: pointer;
+  border-radius: 8px;
+}
