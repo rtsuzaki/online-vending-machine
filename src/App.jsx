@@ -41,36 +41,67 @@ class App extends React.Component {
   }
 
 
-  addToBalance() {
-    this.setState((prevState) => {
-      return { balance: prevState.balance + 1 };
-    });
+  addToBalance(addedVal) {
+    const updatedBalance = this.state.balance + addedVal;
+    fetch(`/balance/${updatedBalance}`, { method: 'put' })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ balance: parseFloat(response) })
+      });
   }
 
   buyItemHandler(item) {
-    console.log(item)
-    console.log('state balance', this.state.balance)
     const updatedBalance = this.state.balance - item.price;
 
-    if (this.state.balance >= item.price) {
+    if (this.state.balance >= item.price && item.quantity > 0) {
       fetch(`/balance/${updatedBalance}`, { method: 'put' })
         .then(response => response.json())
         .then(response => {
-          console.log('HERE')
           this.setState({ balance: parseFloat(response) })
+        })
+        .then(fetch(`/items/${item.id}`, { 
+          method: 'put',
+        }))
+        // .then(response => response.json())
+        .then(() => {
+          const itemsCopy = this.state.items.slice(0);
+          for (let i = 0; i < itemsCopy.length; i += 1) {
+            if (itemsCopy[i].id === item.id) {
+              itemsCopy[i].quantity -= 1;
+            }
+          }
+          this.setState({ items: itemsCopy });
         });
+    } else if (item.quantity <= 0) {
+      window.alert(`Sorry, ${item.name} is out of stock`);
+    } else {
+      window.alert("Insufficent balance. Please add more to your balance in order to purchase this item.");
     }
   }
 
   render() {
     return (
       <div>
-        <button type="button" onClick={this.addToBalance}>
-          Add money to account
+        <button type="button" onClick={() => this.addToBalance(1)}>
+          Add $1
         </button>
+
+        <button type="button" onClick={() => this.addToBalance(5)}>
+          Add $5
+        </button>
+
+        <button type="button" onClick={() => this.addToBalance(10)}>
+          Add $10
+        </button>
+
+        <button type="button" onClick={() => this.addToBalance(20)}>
+          Add $20
+        </button>
+
         <div>
         The user balance is:
         </div>
+
         <div>
           {this.state.balance}
         </div>

@@ -3,7 +3,7 @@ import React from "react";
 const ItemEntry = (props) => {
   return (
     <div className="item" onClick={() => props.buyItem(props.item)}>
-      
+
       <div>
         The item id is:
         {props.item.id}
@@ -17,7 +17,7 @@ const ItemEntry = (props) => {
         {props.item.price}
       </div>
       <div>
-        The item quantity is:
+        The item quantity remaining is:
         {props.item.quantity}
       </div>
 

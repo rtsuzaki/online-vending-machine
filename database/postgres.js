@@ -17,7 +17,7 @@ client.connect((err) => {
 });
 
 const getCurrentBalance = (request, response) => {
-  client.query('SELECT * FROM balances WHERE id=(select max(id) from balances)', (error, results) => {
+  client.query('SELECT * FROM balances WHERE id= 1', (error, results) => {
     if (error) {
       console.log('ERROR');
       throw error;
@@ -47,8 +47,21 @@ const getItems = (request, response) => {
   });
 };
 
+const updateItemQuantity = (request, response) => {
+  const id = parseInt(request.params.id);
+
+  client.query('UPDATE items SET quantity = quantity - 1 WHERE id = $1', [id], (error, results) => {
+    if (error) {
+      console.log('ERROR');
+      throw error;
+    }
+    response.status(200);
+  });
+};
+
 module.exports = {
   getCurrentBalance,
-  getItems,
   updateBalance,
+  getItems,
+  updateItemQuantity,
 };
