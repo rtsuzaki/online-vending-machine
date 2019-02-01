@@ -60,19 +60,23 @@ class App extends React.Component {
         .then(response => {
           this.setState({ balance: parseFloat(response) })
         })
-        .then(fetch(`/items/${item.id}`, { 
+        .then(fetch(`/items/${item.id}`, {
           method: 'put',
-        }))
-        // .then(response => response.json())
-        .then(() => {
+          body: JSON.stringify({ currQuantity: item.quantity }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(response => response.json())
+        .then(response => {
           const itemsCopy = this.state.items.slice(0);
           for (let i = 0; i < itemsCopy.length; i += 1) {
             if (itemsCopy[i].id === item.id) {
-              itemsCopy[i].quantity -= 1;
+              itemsCopy[i].quantity = response.updatedQuantity;
             }
           }
           this.setState({ items: itemsCopy });
-        });
+        }));
     } else if (item.quantity <= 0) {
       window.alert(`Sorry, ${item.name} is out of stock`);
     } else {
