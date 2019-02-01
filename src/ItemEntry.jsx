@@ -5,20 +5,15 @@ const ItemEntry = (props) => {
     <div className="item" onClick={() => props.buyItem(props.item)}>
 
       <div>
-        The item id is:
-        {props.item.id}
+        <p className="item-name">{props.item.name}</p>
       </div>
+
       <div>
-        The item name is:
-        {props.item.name}
+        <p>${props.item.price}</p>
       </div>
+
       <div>
-        The item price is:
-        {props.item.price}
-      </div>
-      <div>
-        The item quantity remaining is:
-        {props.item.quantity}
+        <p>Qty: {props.item.quantity}</p>
       </div>
 
     </div>

@@ -83,16 +83,19 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {[1, 5, 10, 20].map((addedVal) => {
-          return <AddToBalanceButton addToBalance={this.addToBalance} addedVal={addedVal} />;
-        })}
 
-        <div>
-        The user balance is:
+        <div id="balance-header">
+          The user balance is:
+        </div>
+
+        <div id="balance">
+          ${this.state.balance}
         </div>
 
         <div>
-          {this.state.balance}
+          {[1, 5, 10, 20].map((addedVal) => {
+            return <AddToBalanceButton key={addedVal} addToBalance={this.addToBalance} addedVal={addedVal} />;
+          })}
         </div>
 
         <ItemList items={this.state.items} buyItem={this.buyItemHandler} />

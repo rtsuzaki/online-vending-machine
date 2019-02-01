@@ -3,7 +3,7 @@ import ItemEntry from './ItemEntry.jsx';
 
 const ItemList = (props) => {
   return (
-    <div>
+    <div id="item-list">
       {props.items.map((item) => {
         return <ItemEntry key={item.id} item={item} buyItem={props.buyItem}/>;
       })}
