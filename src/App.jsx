@@ -48,6 +48,7 @@ class App extends React.Component {
     this.requestBalanceUpdate(updatedBalance);
   }
 
+  //Separated this function so it is more flexible and can be used within other functions 
   requestBalanceUpdate(updatedBalance) {
     return fetch('/balance', {
       method: 'put',
