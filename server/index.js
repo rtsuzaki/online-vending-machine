@@ -16,7 +16,7 @@ app.use(
 app.use(express.static(path.join(__dirname, '/../dist')));
 
 app.get('/balance', db.getCurrentBalance);
-app.put('/balance/:updatedBalance', db.updateBalance);
+app.put('/balance', db.updateBalance);
 app.get('/items', db.getItems);
 app.put('/items/:id', db.updateItemQuantity);
 

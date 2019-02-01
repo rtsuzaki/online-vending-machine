@@ -27,13 +27,16 @@ const getCurrentBalance = (request, response) => {
 };
 
 const updateBalance = (request, response) => {
-  const updatedBalance = request.params.updatedBalance;
+  const updatedBalance = request.body.updatedBalance;
   client.query('UPDATE balances SET main_user_balance = $1 WHERE id = 1', [updatedBalance], (error, results) => {
     if (error) {
       console.log('ERROR');
       throw error;
     }
-    response.status(200).json(updatedBalance);
+    response.status(200).json({
+      status: 'success',
+      updatedBalance: updatedBalance,
+    });
   });
 };
 

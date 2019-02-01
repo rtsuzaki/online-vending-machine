@@ -22,7 +22,7 @@ CREATE TABLE items (
 );
 
 INSERT INTO balances (main_user_balance)
-  VALUES (5), (10);
+  VALUES (10);
 
 INSERT INTO items (name, price, quantity)
   VALUES ('Snickers', 1.50, 5), ('Cheetos', 1.75, 8), ('Pretzels', 2.00, 3);

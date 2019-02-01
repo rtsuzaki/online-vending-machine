@@ -13,6 +13,7 @@ class App extends React.Component {
 
     this.addToBalance = this.addToBalance.bind(this);
     this.buyItemHandler = this.buyItemHandler.bind(this);
+    this.requestBalanceUpdate = this.requestBalanceUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -44,28 +45,28 @@ class App extends React.Component {
 
   addToBalance(addedVal) {
     const updatedBalance = this.state.balance + addedVal;
-    fetch(`/balance/${updatedBalance}`, { method: 'put' })
+    this.requestBalanceUpdate(updatedBalance);
+  }
+
+  requestBalanceUpdate(updatedBalance) {
+    return fetch('/balance', {
+      method: 'put',
+      body: JSON.stringify({ updatedBalance }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
       .then(response => response.json())
       .then(response => {
-        this.setState({ balance: parseFloat(response) })
-      });
+        this.setState({ balance: response.updatedBalance })
+      })
   }
 
   buyItemHandler(item) {
     const updatedBalance = this.state.balance - item.price;
 
     if (this.state.balance >= item.price && item.quantity > 0) {
-      fetch(`/balance/${updatedBalance}`, { 
-        method: 'put',
-        // body: JSON.stringify({ updatedBalance }),
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
-      })
-        .then(response => response.json())
-        .then(response => {
-          this.setState({ balance: parseFloat(response) })
-        })
+      this.requestBalanceUpdate(updatedBalance)
         .then(fetch(`/items/${item.id}`, {
           method: 'put',
           body: JSON.stringify({ updatedQuantity: item.quantity - 1 }),
@@ -73,16 +74,16 @@ class App extends React.Component {
             'Content-Type': 'application/json',
           },
         })
-        .then(response => response.json())
-        .then(response => {
-          const itemsCopy = this.state.items.slice(0);
-          for (let i = 0; i < itemsCopy.length; i += 1) {
-            if (itemsCopy[i].id === item.id) {
-              itemsCopy[i].quantity = response.updatedQuantity;
+          .then(response => response.json())
+          .then(response => {
+            const itemsCopy = this.state.items.slice(0);
+            for (let i = 0; i < itemsCopy.length; i += 1) {
+              if (itemsCopy[i].id === item.id) {
+                itemsCopy[i].quantity = response.updatedQuantity;
+              }
             }
-          }
-          this.setState({ items: itemsCopy });
-        }));
+            this.setState({ items: itemsCopy });
+          }));
     } else if (item.quantity <= 0) {
       window.alert(`Sorry, ${item.name} is out of stock`);
     } else {
